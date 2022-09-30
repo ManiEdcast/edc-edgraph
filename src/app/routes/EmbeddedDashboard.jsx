@@ -4,7 +4,7 @@ const EmbeddedDashboard = ({ id }) => {
   //initialize state of dashboard
   
   return (
-    <>EmbeddedDashboard</>
+    <>EmbeddedDashboard adding new change</>
   );
 };
 
