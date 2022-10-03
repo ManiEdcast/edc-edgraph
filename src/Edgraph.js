@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 // import { Link } from "react-router-dom";
-import EmbeddedDashboard from './app/routes/EmbeddedDashboard';
 import { getEmbedURL } from './app/actions/embedSSO';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
