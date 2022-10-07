@@ -1,0 +1,54 @@
+import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
+import currentUser from './app/reducers/currentUserReducer';
+import team from './app/reducers/teamReducer';
+import { persistState } from './app/utils/persist';
+import thunk from 'redux-thunk';
+import { routerMiddleware } from 'react-router-redux';
+import { createBrowserHistory } from 'history'
+
+const INIT_REDUCERS = {
+  currentUser,
+  team
+};
+
+const middlewares = [thunk, routerMiddleware(createBrowserHistory)];
+if (process.env.NODE_ENV === `development`) {
+  const { logger } = require(`redux-logger`);
+  middlewares.push(logger);
+}
+
+createBrowserHistory.listen(() => {
+  if (document) {
+    const officeKey = 'redirectTo_App';
+    if (~window.location.href.indexOf(officeKey)) {
+      localStorage.setItem('redirectTo_App', window.location.search.slice(`?${officeKey}=`.length));
+    }
+    document.getElementsByTagName('body')[0].style.overflow = '';
+  }
+});
+
+function createReducer(asyncReducers) {
+  return combineReducers({
+    ...INIT_REDUCERS,
+    ...asyncReducers
+  });
+}
+
+function configureStore(initialState) {
+  const store = createStore(
+    persistState(createReducer(initialState)),
+    compose(applyMiddleware(...middlewares))
+  );
+  store.asyncReducers = {}; // Add a dictionary to keep track of the registered async reducers
+  store.injectReducer = asyncReducer => {
+    // Create an inject reducer function. This function adds the async reducer, and creates a new combined reducer
+    store.asyncReducers = asyncReducer;
+    store.replaceReducer(
+      persistState(createReducer(store.asyncReducers)),
+      compose(applyMiddleware(...middlewares))
+    );
+  };
+  return store; // Return the modified store
+}
+
+export { INIT_REDUCERS, configureStore, createBrowserHistory };

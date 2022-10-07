@@ -1,7 +1,6 @@
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var logger = require('./config/logger')('debug');
 var path = require('path');
 var glob = require('glob');
 var helmet = require('helmet');
@@ -53,6 +52,7 @@ var application = async app => {
 
   // set maxAge for 30 days
   // Disabled etag to fix security issue with Apache Server ETag Header Information Disclosure
+
   app.use(
     express.static(path.resolve('.') + '/public', {
       maxAge: '30d',
@@ -61,6 +61,7 @@ var application = async app => {
   );
 
   if (process.env.NODE_ENV !== 'development') {
+  
     app.use(
       bodyParser.json({
         type: ['application/json', 'application/csp-report', 'application/reports+json']
@@ -90,8 +91,9 @@ var application = async app => {
     })
   );
 
-  require('./config/view')(app, logger);
+  
 
+  // require('./config/view')(app);
   var sink = {
     start: function() {
       glob.sync('./src/**/*.api.server.js').forEach(function(file) {
@@ -99,8 +101,8 @@ var application = async app => {
         require(path.resolve(file))(app);
       });
       // Start our server
-      require('./config/serverManager')(app, logger);
-      require('./config/router')(app, logger);
+      require('./config/serverManager')(app);
+      require('./config/router')(app);
     },
 
     getApp: function() {

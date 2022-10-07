@@ -6,7 +6,7 @@ var path = require('path');
 
 var Config = require('edc-web-sdk/config/customConfig');
 
-module.exports = function(app, logger) {
+module.exports = function(app) {
   app.configMgr = new Config(app);
 
   // If running locally
@@ -145,9 +145,11 @@ module.exports = function(app, logger) {
   }
 
   if (process.env.NODE_ENV !== 'production') {
-    var _port = process.env.PORT || 4001;
+    var _port = process.env.PORT || 3001;
+    console.log('its in prod here check port', _port)
 
     if (process.env.LOCAL_SSL === 'true') {
+      console.log('checj local_ssl');
       https
         .createServer(
           {
@@ -158,47 +160,39 @@ module.exports = function(app, logger) {
           },
           app
         )
-        .listen(8080);
-      logger.info('Started application successfully on https.', {
-        environment: process.env.NODE_ENV || 'development',
-        cpu: require('os').cpus().length,
-        port: 8080
-      });
+        .listen(8081);
+      
     } else {
       http.createServer(app).listen(_port);
-      logger.info('Started application successfully.', {
-        environment: process.env.NODE_ENV || 'development',
-        cpu: require('os').cpus().length,
-        port: _port
-      });
+      
     }
   } else {
     // If running on AWS
     if (cluster.isMaster) {
-      var cpuCount = require('os').cpus().length;
-      for (var i = 0; i < cpuCount; i += 1) {
-        cluster.fork();
-      }
-      // configMgr.logConfig();
-      logger.info('Started application successfully.', {
-        environment: process.env.NODE_ENV,
-        version: require('../../version.json').v,
-        cpu: require('os').cpus().length
-      });
+      // var cpuCount = require('os').cpus().length;
+      // for (var i = 0; i < cpuCount; i += 1) {
+      //   cluster.fork();
+      // }
+      // // configMgr.logConfig();
+      // logger.info('Started application successfully.', {
+      //   environment: process.env.NODE_ENV,
+      //   version: require('../../version.json').v,
+      //   cpu: require('os').cpus().length
+      // });
 
-      cluster.on('online', function(worker) {
-        logger.info('Worker ' + worker.process.pid + ' is online');
-      });
+      // cluster.on('online', function(worker) {
+      //   logger.info('Worker ' + worker.process.pid + ' is online');
+      // });
 
-      cluster.on('exit', function(worker, code, signal) {
-        cluster.fork();
-        logger.error(
-          'Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal
-        );
-        logger.error('Starting a new worker');
-      });
+      // cluster.on('exit', function(worker, code, signal) {
+      //   cluster.fork();
+      //   logger.error(
+      //     'Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal
+      //   );
+      //   logger.error('Starting a new worker');
+      // });
     } else {
-      const port = process.env.PORT || 8080;
+      const port = process.env.PORT || 8081;
       http.createServer(app).listen(port);
     }
   }

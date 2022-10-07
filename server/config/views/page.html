@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript">
+      // do not use es6 syntax in this file as it doesn't handled by babel
+      window._webConstants = {{{env_vars}}};
+      // Asynchronously load CSS and Fonts.
+    </script>
+
+    <link rel="preload" href="{{css}}" as="style" />
+
+    <script type="text/javascript">
+      // Asynchronously load CSS and Fonts.
+      (function() {
+        const remoteStyles = [
+          'https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i',
+          '{{css}}'
+        ];
+        const elementToInsertJSBefore = document.getElementsByTagName('head')[0].firstChild;
+        const elementToInsertCSSBefore = document.getElementsByTagName('head')[0];
+        for (let i = 0; i < remoteStyles.length; i++) {
+          const linkElement = document.createElement('link');
+          linkElement.rel = 'stylesheet';
+          linkElement.media = 'all';
+          linkElement.href = remoteStyles[i];
+          elementToInsertCSSBefore.parentNode.insertBefore(
+            linkElement,
+            elementToInsertCSSBefore.nextSibling
+          );
+        }
+      })();
+    </script>
+
+    <meta charset="utf-8" />
+    {{#if meta.title}}
+    <title>{{meta.title}}</title>
+    <meta property="og:title" content="{{meta.title}}" />
+    <meta name="twitter:title" content="{{meta.title}}" />
+    {{else}}
+    <title>EdCast</title>
+    <meta property="og:title" content="EdCast" />
+    <meta name="twitter:title" content="EdCast" />
+    {{/if}}
+    <meta property="og:type" content="website" />
+
+    {{#if meta.description}}
+    <meta name="description" content="{{meta.description}}" />
+    <meta itemprop="description" content="{{meta.description}}" />
+    <meta property="og:description" content="{{meta.description}}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:description" content="{{meta.description}}" />
+    {{/if}} {{#if meta.image}}
+    <meta itemprop="image" content="https:{{meta.image}}" />
+    <meta property="og:image" content="https:{{meta.image}}" />
+    <meta name="twitter:image" content="https:{{meta.image}}" />
+    {{/if}}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    {{#if meta.favicons}} {{#each meta.favicons}} {{{this}}} {{/each}} {{else}}
+    <!-- We will show edcast logo if favicons are not persent for a org -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="data:image/png;base64,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"
+    />
+    {{/if}}
+    <link href="/images/apple-touch-icon-57x57.png" rel="apple-touch-icon" sizes="57x57" />
+    <link href="/images/apple-touch-icon-60x60.png" rel="apple-touch-icon" sizes="60x60" />
+    <link href="/images/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72" />
+    <link href="/images/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
+    <link href="/images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114" />
+    <link href="/images/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
+    <link href="/images/apple-touch-icon-144x144.png" rel="apple-touch-icon" sizes="144x144" />
+    <link href="/images/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
+    <link href="/images/apple-touch-icon-180x180.png" rel="apple-touch-icon" sizes="180x180" />
+    <meta content="#b91d47" name="msapplication-TileColor" />
+    <meta content="#316cc4" name="theme-color" />
+    {{{newrelic}}}
+
+    <style>
+      #splashscreen {
+        background: url(/images/loading.gif) rgba(240, 240, 240, 1) no-repeat center center;
+        background-size: 45px;
+        position: fixed;
+        z-index: 99999;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        visibility: visible;
+        opacity: 1;
+        -webkit-transition: visibility 0s linear 0.33s, opacity 0.33s linear;
+        -o-transition: visibility 0s linear 0.33s, opacity 0.33s linear;
+        transition: visibility 0s linear 0.33s, opacity 0.33s linear;
+      }
+    </style>
+    <!-- <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.6.3/papaparse.min.js"
+    ></script> -->
+    <link rel="preload" href="{{common}}" as="script" />
+    <link rel="preload" href="{{bootstrap}}" as="script" />
+    <link rel="preload" href="{{app}}" as="script" />
+
+    <script defer src="{{common}}"></script>
+    <script defer src="{{bootstrap}}"></script>
+    <script defer src="{{app}}"></script>
+    <script type="text/javascript">
+      const language = window.localStorage.getItem('selectedLanguage');
+      document.getElementsByTagName('html')[0].setAttribute('lang', language || 'en');
+
+      // Do window.localStorage.setItem("consoleLogEnable", "true") to enable console.log
+      // Remove consoleLogEnable entry from localStorage to disable console.log
+      var consoleLogEnabled = window.localStorage.getItem('consoleLogEnable') === 'true';
+      if (!consoleLogEnabled) {
+        if (!window.console) {
+          window.console = {};
+        }
+        var methods = ['log', 'debug', 'warn', 'info', 'error'];
+        for (var i = 0; i < methods.length; i++) {
+          console[methods[i]] = function() {};
+        }
+      }
+      console.log('check here in the end of the page.html')
+    </script>
+  </head>
+
+  <script>
+    window.__edOrgData = {{{json __edOrgData}}};
+  </script>
+
+  <body style="background:#F0F0F5">
+    <div id="splashscreen"></div>
+    <div id="edc-web-body"></div>
+    <svg style="height:0;position:absolute;width:0;">
+      <defs>
+        <filter id="blur-effect-img">
+          <feGaussianBlur stdDeviation="10" />
+        </filter>
+      </defs>
+    </svg>
+  </body>
+</html>

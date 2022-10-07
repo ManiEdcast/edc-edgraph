@@ -38,10 +38,11 @@ function App(history){
 
 window.renderedgraph = (containerId, history) => {
   const root = ReactDOM.createRoot(document.getElementById(containerId));
-  // <Provider store={store}>
-  //   </Provider>
+  
   root.render(
-    <App history={history} />
+    <Provider store={store}>
+      <App history={history} />
+    </Provider>
   );
 
   // if (process.env.NODE_ENV !== 'production' && module.hot) {
