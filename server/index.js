@@ -93,7 +93,7 @@ var application = async app => {
 
   
 
-  // require('./config/view')(app);
+  require('./config/view')(app);
   var sink = {
     start: function() {
       glob.sync('./src/**/*.api.server.js').forEach(function(file) {
