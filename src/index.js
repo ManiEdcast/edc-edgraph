@@ -2,38 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import EdgraphApp from './EdgraphApp';
-import Edgraph from './Edgraph';
 import reportWebVitals from './reportWebVitals';
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate
-} from "react-router-dom";
+
 // import { Provider } from 'react-redux'
-import { Data } from './app/actions/const';
+import App from './App';
 
 
 // import configureStore from './configureStore'
 
 // const store = configureStore()
 
-function App(history){
   
 
-  
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/edgraph" element={<Edgraph history={history} data={Data}/>}  />
-        {/* <Route path="/edgraph/channel-analytics" element={<div>this is channel analytics</div>} />
-        <Route path="/edgraph/group-analytics" element={<div>this is group analytics</div>} /> */}
-        <Route path="/" element={<Navigate replace to="/edgraph" />} history={history}/>
-      </Routes>
-    </BrowserRouter>
-  )
 
-}
 
 
 window.renderedgraph = (containerId, history) => {

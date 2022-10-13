@@ -29,10 +29,6 @@ export const Data = {
                 id: 17,
             },
             {
-                name: "Content Analytics",
-                id: 32,
-            },
-            {
                 name: "Channel Analytics",
                 id: 27,
             },
@@ -43,10 +39,6 @@ export const Data = {
             {
                 name: "Feature Reports",
                 id: 49,
-            },
-            {
-                name: "Group Analytics",
-                id: 37,
             },
             {
                 name: "Skills Passport",
