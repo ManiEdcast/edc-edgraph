@@ -58,7 +58,18 @@ class Dashboard extends Component {
     const id_v = this.state.dashboards[v].id;
     console.log("dashboard id", this.props.router.params.id, id_v, v );
     this.setState({ currentSelected: v });
-    this.props.router.navigate(`/${ROUTE_PATH.DASHBOARD}/${id_v}`);
+
+    //Temp code to get JWT token
+    const searchQuery = this.props.router.location.search;
+    let searchToken = searchQuery.indexOf('token') !== -1 ? searchQuery.substring(searchQuery.indexOf('token') + 5 + 1) : '';
+    if(searchToken) {
+      sessionStorage.setItem('token', searchToken); 
+    } else {
+      searchToken = sessionStorage.getItem('token') || '';
+    }
+    //Temp code to get JWT token
+
+    this.props.router.navigate(`/${ROUTE_PATH.DASHBOARD}/${id_v}?token=${searchToken}`);
   };
 
   render() {

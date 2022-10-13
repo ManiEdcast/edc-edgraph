@@ -11,27 +11,32 @@ const LookerIframe = () => {
 
     const generateUrl = (dashboardId) => {
         setLoadingUrl(true);
-        getEmbedURL({
-          url: `/embed/dashboards/${dashboardId}`,
-          models: "[concord,edcast_scratch]",
-          internal_request: "Yes",
-          stub: "No",
-        })
-        .then((signedUrl) => {
-            setSignedUrl(signedUrl);
-            setTimeout(() => {
-                setLoadingUrl(false)
-            }, 2000)
-        })
-        .catch(() => console.error("error loading == "))
-        // .finally(() => 
-        // {
-        //     setLoadingUrl(false)
-        // });
+        const sessionToken = sessionStorage.getItem('token')
+        if(sessionToken) {
+          getEmbedURL({
+            url: `/embed/dashboards/${dashboardId}`,
+            models: "[concord,edcast_scratch]",
+            internal_request: "Yes",
+            stub: "No",
+          })
+          .then((signedUrl) => {
+              setSignedUrl(signedUrl);
+              setTimeout(() => {
+                  setLoadingUrl(false)
+              }, 2000)
+          })
+          .catch(() => console.error("error loading == "))
+                  // .finally(() => 
+          // {
+          //     setLoadingUrl(false)
+          // });
+      } else {
+        window.alert("Token not available");
+      }
     }
 
     useEffect(() => {
-        generateUrl(id);
+      generateUrl(id);
     }, [id])
 
     // const eventCapture = (event) => {
